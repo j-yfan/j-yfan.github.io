@@ -45,6 +45,26 @@
         a:hover {
             text-decoration: underline;
         }
+        .citation {
+            color: #0071e3;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .citation:hover {
+            text-decoration: underline;
+        }
+        .bibliography {
+            margin-top: 2em;
+        }
+        .bib-entry {
+            margin-bottom: 1em;
+            padding-left: 2em;
+            text-indent: -2em;
+        }
+        .bib-key {
+            font-weight: 600;
+            color: #666;
+        }
     </style>
 </head>
 <body>
@@ -53,12 +73,17 @@
         <p>Hello! I'm Jing-Yuan Fan, currently a PhD student in Molecular Engineering at the University of Chicago. My research focuses on the development of automated exploration techniques for mixed conductive polymers.</p>
         <h2>Publications</h2>
         <ul>
-            <li>Fan, J.Y., et al. "Colorful and Semitransparent Organic Solar Modules via Air‐Blade Assisted Coating of Active Layers" <em>Advanced Materials</em>, 2025.</li>
-            <li>Fan, J.Y., et al. "Deep Learning for Real-Time Image Recognition." <em>IEEE Transactions on AI</em>, 2023.</li>
-            <li>Fan, J.Y., et al. "A Survey of Modern Machine Learning Techniques." <em>ACM Computing Surveys</em>, 2022.</li>
+            <li>Fan, J.Y., et al. "Colorful and Semitransparent Organic Solar Modules via Air‐Blade Assisted Coating of Active Layers" <em>Advanced Materials</em>, 2025. <a href="#fan2025" class="citation">[Fan2025]</a></li>
         </ul>
 
-        <h2>Contact</h2>`
+        <div class="bibliography">
+            <h2>Bibliography</h2>
+            <div class="bib-entry" id="fan2025">
+                <span class="bib-key">[Fan2025]</span> Fan, J.Y., et al. "Colorful and Semitransparent Organic Solar Modules via Air‐Blade Assisted Coating of Active Layers." <em>Advanced Materials</em>, 2025.
+            </div>
+        </div>
+
+        <h2>Contact</h2>
         <div class="contact">
             <p>Email: <a href="mailto:j.yfan@email.com">j.yfan@email.com</a></p>
             <p>GitHub: <a href="https://github.com/j-yfan" target="_blank">github.com/j-yfan</a></p>
