@@ -3,92 +3,643 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>J.Y. Fan | Personal Website</title>
+    <title>Jing-Yuan Fan | Research and Projects</title>
     <style>
+        :root {
+            --bg: #f7f9ff;
+            --bg-accent: #c6ffd8;
+            --surface: #fff9ee;
+            --surface-alt: #e8f4ff;
+            --text: #21243d;
+            --muted: #545b78;
+            --accent: #1f74ff;
+            --accent-strong: #0841a9;
+            --shadow: rgba(20, 29, 59, 0.18);
+            --card-border: #1f74ff;
+            --header-font: "Press Start 2P", "Courier New", monospace;
+            --body-font: "IBM Plex Sans", "Trebuchet MS", sans-serif;
+            --radius: 14px;
+            --max-width: 1100px;
+            --hero-grid: rgba(31, 116, 255, 0.16);
+        }
+
+        body.theme-clean {
+            --bg: #f5f5f7;
+            --bg-accent: #ffffff;
+            --surface: #ffffff;
+            --surface-alt: #fbfbfd;
+            --text: #1d1d1f;
+            --muted: #6e6e73;
+            --accent: #0071e3;
+            --accent-strong: #0058b5;
+            --shadow: rgba(15, 15, 20, 0.08);
+            --card-border: #e4e4e9;
+            --header-font: "SF Pro Display", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            --body-font: "SF Pro Text", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            --radius: 24px;
+            --hero-grid: rgba(0, 113, 227, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
         body {
             margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
-            background: #fff;
-            color: #1d1d1f;
+            padding: 0;
+            min-height: 100%;
         }
-        .container {
-            max-width: 700px;
-            margin: 60px auto;
-            padding: 0 24px;
+
+        body {
+            font-family: var(--body-font);
+            color: var(--text);
+            background:
+                radial-gradient(circle at 8% 10%, var(--bg-accent) 0, transparent 34%),
+                radial-gradient(circle at 82% 16%, rgba(31, 116, 255, 0.2) 0, transparent 29%),
+                linear-gradient(180deg, var(--bg), #ecf2ff 55%, var(--bg));
+            transition: background 0.35s ease, color 0.35s ease;
         }
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 600;
-            margin-bottom: 0.5em;
+
+        .hero-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(var(--hero-grid) 1px, transparent 1px),
+                linear-gradient(90deg, var(--hero-grid) 1px, transparent 1px);
+            background-size: 22px 22px;
+            opacity: 0.28;
+            z-index: 0;
         }
-        h2 {
-            font-size: 1.5rem;
-            font-weight: 500;
-            margin-top: 2em;
-            margin-bottom: 0.5em;
+
+        .layout {
+            position: relative;
+            z-index: 1;
+            width: min(var(--max-width), 92vw);
+            margin: 30px auto 56px;
         }
-        p, li {
-            font-size: 1.1rem;
-            line-height: 1.7;
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+            background: color-mix(in srgb, var(--surface), #ffffff 18%);
+            border: 2px solid var(--card-border);
+            border-radius: var(--radius);
+            padding: 14px 16px;
+            box-shadow: 0 10px 24px var(--shadow);
         }
-        ul {
-            padding-left: 1.2em;
+
+        .brand {
+            font-family: var(--header-font);
+            font-size: clamp(0.75rem, 1.3vw, 1rem);
+            letter-spacing: 0.05em;
         }
-        .contact {
-            margin-top: 2em;
-            font-size: 1.1rem;
+
+        .theme-switch {
+            border: 2px solid var(--card-border);
+            border-radius: 999px;
+            background: var(--surface-alt);
+            color: var(--text);
+            padding: 7px;
+            display: inline-flex;
+            gap: 6px;
         }
-        a {
-            color: #0071e3;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        .citation {
-            color: #0071e3;
+
+        .theme-button {
+            border: 0;
+            background: transparent;
+            color: var(--muted);
+            font: inherit;
+            border-radius: 999px;
+            padding: 8px 12px;
             cursor: pointer;
-            text-decoration: none;
+            transition: all 0.25s ease;
         }
-        .citation:hover {
-            text-decoration: underline;
+
+        .theme-button.active {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 4px 12px color-mix(in srgb, var(--accent), transparent 62%);
         }
-        .bibliography {
-            margin-top: 2em;
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 22px;
+            align-items: stretch;
+            margin-bottom: 24px;
         }
-        .bib-entry {
-            margin-bottom: 1em;
-            padding-left: 2em;
-            text-indent: -2em;
+
+        .panel {
+            background: var(--surface);
+            border: 2px solid var(--card-border);
+            border-radius: var(--radius);
+            box-shadow: 0 14px 30px var(--shadow);
+            padding: clamp(18px, 2vw, 28px);
+            position: relative;
+            overflow: hidden;
         }
-        .bib-key {
+
+        .panel::after {
+            content: "";
+            position: absolute;
+            inset: auto -80px -90px auto;
+            width: 240px;
+            height: 180px;
+            background: radial-gradient(circle, color-mix(in srgb, var(--accent), transparent 74%) 0, transparent 66%);
+            pointer-events: none;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin: 0;
+            font-family: var(--header-font);
+            line-height: 1.25;
+        }
+
+        h1 {
+            font-size: clamp(1.3rem, 3vw, 2.2rem);
+            margin-bottom: 14px;
+        }
+
+        h2 {
+            font-size: clamp(1rem, 2.1vw, 1.35rem);
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.72;
+            font-size: 1.02rem;
+        }
+
+        .hero-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 2px solid var(--card-border);
+            border-radius: 999px;
+            padding: 8px 14px;
             font-weight: 600;
-            color: #666;
+            text-decoration: none;
+            color: var(--text);
+            background: var(--surface-alt);
+            transition: transform 0.2s ease, border-color 0.25s ease;
+        }
+
+        .pill:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent);
+        }
+
+        .pixel-avatar {
+            width: min(100%, 260px);
+            margin: 0 auto;
+            aspect-ratio: 1;
+            background:
+                linear-gradient(135deg, #293669 0 35%, #4e5eb2 35% 67%, #0f1641 67%),
+                repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.1) 0 8px, rgba(0, 0, 0, 0) 8px 16px);
+            border: 3px solid var(--card-border);
+            border-radius: 16px;
+            position: relative;
+            box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.2), 0 12px 20px var(--shadow);
+            image-rendering: pixelated;
+            animation: floaty 3s ease-in-out infinite;
+        }
+
+        .pixel-avatar::before,
+        .pixel-avatar::after {
+            content: "";
+            position: absolute;
+            width: 44px;
+            height: 44px;
+            background: #ffdf8a;
+            top: 30%;
+            box-shadow: 68px 0 0 #ffdf8a;
+            left: calc(50% - 56px);
+        }
+
+        .pixel-avatar::after {
+            width: 18px;
+            height: 18px;
+            background: #1d1d1f;
+            top: 37%;
+            left: calc(50% - 42px);
+            box-shadow: 68px 0 0 #1d1d1f;
+        }
+
+        @keyframes floaty {
+            0%,
+            100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .badge {
+            font-size: 0.78rem;
+            font-weight: 700;
+            border: 1px solid var(--card-border);
+            border-radius: 999px;
+            padding: 4px 9px;
+            color: var(--accent-strong);
+            background: color-mix(in srgb, var(--surface-alt), #fff 22%);
+        }
+
+        .stack {
+            display: grid;
+            gap: 12px;
+        }
+
+        .stack-card {
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            background: color-mix(in srgb, var(--surface), #fff 28%);
+            padding: 12px;
+        }
+
+        .stack-card h3 {
+            font-size: 0.98rem;
+            margin-bottom: 8px;
+        }
+
+        .stack-card p {
+            font-size: 0.94rem;
+        }
+
+        .interactive-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .tiny-card {
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 10px;
+            background: var(--surface-alt);
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .tiny-card:hover,
+        .tiny-card.active {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 14px var(--shadow);
+            border-color: var(--accent);
+        }
+
+        .tiny-card strong {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 0.92rem;
+        }
+
+        .tiny-card span {
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        .reaction-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .reaction-row button {
+            border: 1px solid var(--card-border);
+            background: var(--surface-alt);
+            color: var(--text);
+            border-radius: 999px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font: inherit;
+            transition: all 0.2s ease;
+        }
+
+        .reaction-row button:hover {
+            background: color-mix(in srgb, var(--accent), #fff 78%);
+            border-color: var(--accent);
+        }
+
+        .stat {
+            margin-top: 10px;
+            font-size: 0.92rem;
+            color: var(--muted);
+        }
+
+        .contact {
+            margin-top: 24px;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .contact a {
+            text-decoration: none;
+            color: var(--text);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 10px;
+            background: var(--surface-alt);
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .contact a:hover {
+            border-color: var(--accent);
+            color: var(--accent-strong);
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(14px);
+            animation: enter 0.5s ease forwards;
+        }
+
+        .delay-1 { animation-delay: 0.05s; }
+        .delay-2 { animation-delay: 0.13s; }
+        .delay-3 { animation-delay: 0.2s; }
+        .delay-4 { animation-delay: 0.28s; }
+
+        @keyframes enter {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 960px) {
+            .hero,
+            .interactive-area {
+                grid-template-columns: 1fr;
+            }
+
+            .main-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .contact {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .topbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .theme-switch {
+                justify-content: center;
+            }
+
+            .main-grid,
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .layout {
+                width: min(var(--max-width), 94vw);
+            }
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h1>Jing-Yuan Fan</h1>
-        <p>Hello! I'm Jing-Yuan Fan, currently a PhD student in Molecular Engineering at the University of Chicago. My research focuses on the development of automated exploration techniques for mixed conductive polymers.</p>
-        <h2>Publications</h2>
-        <ul>
-            <li>Fan, J.Y., et al. "Colorful and Semitransparent Organic Solar Modules via Air‐Blade Assisted Coating of Active Layers" <em>Advanced Materials</em>, 2025. <a href="#fan2025" class="citation">[Fan2025]</a></li>
-        </ul>
+<body class="theme-pixel">
+    <div class="hero-overlay"></div>
 
-        <div class="bibliography">
-            <h2>Bibliography</h2>
-            <div class="bib-entry" id="fan2025">
-                <span class="bib-key">[Fan2025]</span> Fan, J.Y., et al. "Colorful and Semitransparent Organic Solar Modules via Air‐Blade Assisted Coating of Active Layers." <em>Advanced Materials</em>, 2025.
+    <main class="layout">
+        <header class="topbar fade-in delay-1">
+            <div class="brand">JING-YUAN FAN // RESEARCH DECK</div>
+            <div class="theme-switch" role="tablist" aria-label="Theme switcher">
+                <button class="theme-button active" id="pixelThemeButton" type="button" role="tab" aria-selected="true">Pixel Game Style</button>
+                <button class="theme-button" id="cleanThemeButton" type="button" role="tab" aria-selected="false">Clean Apple Style</button>
             </div>
-        </div>
+        </header>
 
-        <h2>Contact</h2>
-        <div class="contact">
-            <p>Email: <a href="mailto:j.yfan@email.com">j.yfan@email.com</a></p>
-            <p>GitHub: <a href="https://github.com/j-yfan" target="_blank">github.com/j-yfan</a></p>
-            <p>LinkedIn: <a href="https://linkedin.com/in/j-yfan" target="_blank">linkedin.com/in/j-yfan</a></p>
-        </div>
-    </div>
+        <section class="hero">
+            <article class="panel fade-in delay-2">
+                <h1>Hi, I am Jing-Yuan Fan.</h1>
+                <p>I am a PhD student in Molecular Engineering at the University of Chicago, building automated exploration workflows for mixed conductive polymers and next-generation organic electronic materials.</p>
+                <div class="hero-links">
+                    <a class="pill" href="https://scholar.google.com/citations?user=EH-JdmkAAAAJ&amp;hl=zh-CN" target="_blank" rel="noopener noreferrer">Google Scholar Profile</a>
+                    <a class="pill" href="#research">Current Research</a>
+                    <a class="pill" href="#diy">DIY Projects</a>
+                    <a class="pill" href="#cad">CAD Displays</a>
+                </div>
+            </article>
+            <aside class="panel fade-in delay-3" aria-label="Pixel portrait">
+                <div class="pixel-avatar" id="pixelAvatar"></div>
+                <p class="stat" id="pointerHint">Move your cursor to energize the avatar.</p>
+            </aside>
+        </section>
+
+        <section class="main-grid">
+            <article class="panel fade-in delay-2" id="research">
+                <div class="section-title">
+                    <h2>Current Research</h2>
+                    <span class="badge">Lab Mode</span>
+                </div>
+                <div class="stack">
+                    <div class="stack-card">
+                        <h3>Autonomous Materials Exploration</h3>
+                        <p>Closed-loop experimentation for mixed conductive polymers with active learning and uncertainty-guided parameter search.</p>
+                    </div>
+                    <div class="stack-card">
+                        <h3>Scalable Organic Solar Modules</h3>
+                        <p>Process and morphology controls for colorful, semitransparent module architectures compatible with practical manufacturing.</p>
+                    </div>
+                </div>
+            </article>
+
+            <article class="panel fade-in delay-3" id="diy">
+                <div class="section-title">
+                    <h2>DIY Projects</h2>
+                    <span class="badge">Build Log</span>
+                </div>
+                <div class="stack">
+                    <div class="stack-card">
+                        <h3>Automated Test Rig</h3>
+                        <p>Home-built instrument control platform for repeatable cycling, data capture, and lightweight dashboard reporting.</p>
+                    </div>
+                    <div class="stack-card">
+                        <h3>Lab Tooling Scripts</h3>
+                        <p>Small utilities for data parsing, visualization, and experiment bookkeeping to reduce repetitive manual steps.</p>
+                    </div>
+                </div>
+            </article>
+
+            <article class="panel fade-in delay-4" id="cad">
+                <div class="section-title">
+                    <h2>CAD Displays</h2>
+                    <span class="badge">3D Concepts</span>
+                </div>
+                <div class="stack">
+                    <div class="stack-card">
+                        <h3>Prototype A</h3>
+                        <p>Compact fixture concept optimized for alignment, modular sensing interfaces, and robust repeatability.</p>
+                    </div>
+                    <div class="stack-card">
+                        <h3>Prototype B</h3>
+                        <p>Scalable enclosure strategy designed for clean cable routing, thermal stability, and quick part replacement.</p>
+                    </div>
+                </div>
+            </article>
+        </section>
+
+        <section class="interactive-area">
+            <article class="panel fade-in delay-3">
+                <h2>Viewer Interaction</h2>
+                <p>Select what you want to see more of. The cards react and the result updates live.</p>
+                <div class="card-grid" id="interestCards">
+                    <button class="tiny-card" data-score="research" type="button">
+                        <strong>Research</strong>
+                        <span>Papers and methods</span>
+                    </button>
+                    <button class="tiny-card" data-score="diy" type="button">
+                        <strong>DIY</strong>
+                        <span>Hardware and scripts</span>
+                    </button>
+                    <button class="tiny-card" data-score="cad" type="button">
+                        <strong>CAD</strong>
+                        <span>Design and prototyping</span>
+                    </button>
+                </div>
+                <p class="stat" id="interestResult">No selection yet. Click a card to vote.</p>
+            </article>
+
+            <article class="panel fade-in delay-4">
+                <h2>Quick Reactions</h2>
+                <p>Your reactions are counted instantly for this session.</p>
+                <div class="reaction-row" id="reactionButtons">
+                    <button type="button" data-emoji="Insightful">Insightful</button>
+                    <button type="button" data-emoji="Creative">Creative</button>
+                    <button type="button" data-emoji="Inspiring">Inspiring</button>
+                </div>
+                <p class="stat" id="reactionResult">No reactions yet.</p>
+            </article>
+        </section>
+
+        <section class="panel fade-in delay-4">
+            <h2>Contact</h2>
+            <div class="contact">
+                <a href="mailto:j.yfan@email.com">Email</a>
+                <a href="https://github.com/j-yfan" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a href="https://linkedin.com/in/j-yfan" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const body = document.body;
+        const pixelThemeButton = document.getElementById("pixelThemeButton");
+        const cleanThemeButton = document.getElementById("cleanThemeButton");
+        const interestCards = Array.from(document.querySelectorAll(".tiny-card"));
+        const interestResult = document.getElementById("interestResult");
+        const reactionButtons = Array.from(document.querySelectorAll("#reactionButtons button"));
+        const reactionResult = document.getElementById("reactionResult");
+        const avatar = document.getElementById("pixelAvatar");
+        const pointerHint = document.getElementById("pointerHint");
+
+        const interestVotes = { research: 0, diy: 0, cad: 0 };
+        const reactionVotes = { Insightful: 0, Creative: 0, Inspiring: 0 };
+
+        function setTheme(theme) {
+            const isClean = theme === "clean";
+            body.classList.toggle("theme-clean", isClean);
+            pixelThemeButton.classList.toggle("active", !isClean);
+            cleanThemeButton.classList.toggle("active", isClean);
+            pixelThemeButton.setAttribute("aria-selected", String(!isClean));
+            cleanThemeButton.setAttribute("aria-selected", String(isClean));
+        }
+
+        function renderInterest() {
+            const sorted = Object.entries(interestVotes).sort((a, b) => b[1] - a[1]);
+            const [topKey, topCount] = sorted[0];
+            if (topCount === 0) {
+                interestResult.textContent = "No selection yet. Click a card to vote.";
+                return;
+            }
+
+            const labels = { research: "Current Research", diy: "DIY Projects", cad: "CAD Displays" };
+            interestResult.textContent = "Most selected: " + labels[topKey] + " (" + topCount + " votes this session).";
+        }
+
+        function renderReactions() {
+            const total = Object.values(reactionVotes).reduce((sum, value) => sum + value, 0);
+            if (total === 0) {
+                reactionResult.textContent = "No reactions yet.";
+                return;
+            }
+
+            const summary = Object.entries(reactionVotes)
+                .filter(([, value]) => value > 0)
+                .map(([key, value]) => key + ": " + value)
+                .join(" | ");
+            reactionResult.textContent = "Session reactions -> " + summary;
+        }
+
+        pixelThemeButton.addEventListener("click", () => setTheme("pixel"));
+        cleanThemeButton.addEventListener("click", () => setTheme("clean"));
+
+        interestCards.forEach((card) => {
+            card.addEventListener("click", () => {
+                const key = card.dataset.score;
+                interestVotes[key] += 1;
+                interestCards.forEach((item) => item.classList.remove("active"));
+                card.classList.add("active");
+                renderInterest();
+            });
+        });
+
+        reactionButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                const key = button.dataset.emoji;
+                reactionVotes[key] += 1;
+                renderReactions();
+            });
+        });
+
+        document.addEventListener("pointermove", (event) => {
+            const xPercent = (event.clientX / window.innerWidth - 0.5) * 10;
+            const yPercent = (event.clientY / window.innerHeight - 0.5) * 8;
+            avatar.style.transform = "translate(" + xPercent.toFixed(2) + "px, " + yPercent.toFixed(2) + "px)";
+            pointerHint.textContent = "Avatar synced with your pointer at x=" + Math.round(event.clientX) + ", y=" + Math.round(event.clientY) + ".";
+        });
+    </script>
 </body>
 </html>
